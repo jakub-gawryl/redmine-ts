@@ -62,7 +62,8 @@ export class Redmine {
                 baseURL: this.baseURL,
                 maxBodyLength: this.options.maxUploadSize || 5242880, // Default: 5MB
                 headers: {
-                    'X-Redmine-API-Key': this.options.apiKey
+                    'X-Redmine-API-Key': this.options.apiKey,
+                    'Content-Type': 'application/json'
                 }
             };
             this.conn = axios.create(connConfig);
@@ -247,7 +248,7 @@ export class Redmine {
      * @param projectId  can be either the project numerical id or the project identifier.
      * @param membership 
      */
-    public addProjectMember(projectId: number, membership: MembershipParams): Promise<any> {
+    public addProjectMember(projectId: ProjectID, membership: MembershipParams): Promise<any> {
         return this.request('post', `projects/${projectId}/memberships`, { membership })
     }
     
@@ -291,7 +292,7 @@ export class Redmine {
      * 
      * @param params 
      */
-    public listUsers(params: ListUsersParams): Promise<any> {
+    public listUsers(params?: ListUsersParams): Promise<any> {
         return this.request('get', 'users', { params })
     }
 
@@ -424,7 +425,7 @@ export class Redmine {
      * @param projectId 
      * @param params 
      */
-    public listProjectNews(projectId: ProjectID, params: ListNewsParams): Promise<any> {
+    public listProjectNews(projectId: ProjectID, params?: ListNewsParams): Promise<any> {
         return this.request('get', `projects/${projectId}/news`, { params });
     }
 
