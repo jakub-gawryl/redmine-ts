@@ -66,6 +66,12 @@ redmine.uploadFile(fileContent).then(res => {
 })
 ```
 
+# Planned improvements
+
+- Add support for username/password authentication
+- Add support for [User-Impersonation](https://www.redmine.org/projects/redmine/wiki/rest_api#User-Impersonation)
+
+
 # License 
 
 This software is distributed under the [MIT License](LICENSE.md).
