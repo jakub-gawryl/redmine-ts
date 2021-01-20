@@ -1,6 +1,6 @@
 {
   "name": "redmine-ts",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Redmine REST API client written using TypeScript",
   "author": "Jakub Gawryl",
   "license": "MIT",
