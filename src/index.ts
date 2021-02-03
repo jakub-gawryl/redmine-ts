@@ -10,7 +10,7 @@ import axios, { AxiosRequestConfig, Method , AxiosResponse} from 'axios';
 export class Redmine {
 
     private baseURL: string;
-    private options: RedmineOptions;
+    private options: RedmineTS.Config;
 
     private conn: any;
 
@@ -19,7 +19,7 @@ export class Redmine {
      * @param host 
      * @param options 
      */
-    constructor(baseUrl: string, options: RedmineOptions) {
+    constructor(baseUrl: string, options: RedmineTS.Config) {
         if (!baseUrl) {
             throw Error('Redmine host is not specified!')
         }
@@ -103,7 +103,7 @@ export class Redmine {
      * 
      * @param params
      */
-    public listProjects(params?: ListProjectsParams): Promise<any> {
+    public listProjects(params?: RedmineTS.Projects.ListParams): Promise<any> {
         return this.request('get', 'projects', { params })
     }
 
@@ -113,7 +113,7 @@ export class Redmine {
      * 
      * @param project
      */
-    public createProject(project: CreateProjectParams): Promise<any> {
+    public createProject(project: RedmineTS.Projects.CreateParams): Promise<any> {
         return this.request('post', 'projects', { project })
     }
 
@@ -124,7 +124,7 @@ export class Redmine {
      * @param projectId 
      * @param params
      */
-    public getProject(projectId: ProjectID, params?: GetProjectParams): Promise<any> {
+    public getProject(projectId: RedmineTS.Projects.ID, params?: RedmineTS.Projects.GetParams): Promise<any> {
         return this.request('get', `projects/${projectId}`, { params })
     }
 
@@ -135,7 +135,7 @@ export class Redmine {
      * @param projectId 
      * @param project
      */
-    public updateProject(projectId: ProjectID, project: UpdateProjectParams): Promise<any> {
+    public updateProject(projectId: RedmineTS.Projects.ID, project: RedmineTS.Projects.UpdateParams): Promise<any> {
         return this.request('put', `projects/${projectId}`, { project })
     }
 
@@ -145,7 +145,7 @@ export class Redmine {
      * 
      * @param projectId
      */
-    public deleteProject(projectId: ProjectID): Promise<any> {
+    public deleteProject(projectId: RedmineTS.Projects.ID): Promise<any> {
         return this.request('delete', `projects/${projectId}`)
     }
 
@@ -158,7 +158,7 @@ export class Redmine {
      * 
      * @param params 
      */
-    public listIssues(params?: ListIssuesParams): Promise<any> {
+    public listIssues(params?: RedmineTS.Issues.ListParams): Promise<any> {
         return this.request('get', 'issues', { params })
     }
 
@@ -168,7 +168,7 @@ export class Redmine {
      * 
      * @param issue
      */
-    public createIssue(issue: CreateIssueParams): Promise<any> {
+    public createIssue(issue: RedmineTS.Issues.CreateParams): Promise<any> {
         return this.request('post', 'issues', { issue })
     }
 
@@ -179,7 +179,7 @@ export class Redmine {
      * @param issueId 
      * @param params
      */
-    public getIssue(issueId: number, params?: GetIssueParams): Promise<any> {
+    public getIssue(issueId: number, params?: RedmineTS.Issues.GetParams): Promise<any> {
         return this.request('get', `issues/${issueId}`, { params })
     }
 
@@ -190,7 +190,7 @@ export class Redmine {
      * @param issueId
      * @param issue
      */
-    public updateIssue(issueId: number, issue: UpdateIssueParams): Promise<any> {
+    public updateIssue(issueId: number, issue: RedmineTS.Issues.UpdateParams): Promise<any> {
         return this.request('put', `issues/${issueId}`, { issue })
     }
 
@@ -237,7 +237,7 @@ export class Redmine {
      * 
      * @param projectId can be either the project numerical id or the project identifier.
      */
-    public listProjectMembers(projectId: ProjectID, params?: ListProjectMembersParams): Promise<any> {
+    public listProjectMembers(projectId: RedmineTS.Projects.ID, params?: RedmineTS.Memberships.ListProjectMembersParams): Promise<any> {
         return this.request('get', `projects/${projectId}/memberships`, { params })
     }
 
@@ -248,7 +248,7 @@ export class Redmine {
      * @param projectId  can be either the project numerical id or the project identifier.
      * @param membership 
      */
-    public addProjectMember(projectId: ProjectID, membership: MembershipParams): Promise<any> {
+    public addProjectMember(projectId: RedmineTS.Projects.ID, membership: RedmineTS.Memberships.AddParams): Promise<any> {
         return this.request('post', `projects/${projectId}/memberships`, { membership })
     }
     
@@ -269,7 +269,7 @@ export class Redmine {
      * @param membershipId 
      * @param membership 
      */
-    public updateMembership(membershipId: number, membership: UpdateMembership): Promise<any> {
+    public updateMembership(membershipId: number, membership: RedmineTS.Memberships.UpdateParams): Promise<any> {
         return this.request('put', `memberships/${membershipId}`, { membership })
     }
 
@@ -292,7 +292,7 @@ export class Redmine {
      * 
      * @param params 
      */
-    public listUsers(params?: ListUsersParams): Promise<any> {
+    public listUsers(params?: RedmineTS.Users.ListParams): Promise<any> {
         return this.request('get', 'users', { params })
     }
 
@@ -303,7 +303,7 @@ export class Redmine {
      * @param user 
      * @param sendToUser 
      */
-    public createUser(user: CreateUserParams, sendToUser: boolean = false): Promise<any> {
+    public createUser(user: RedmineTS.Users.CreateParams, sendToUser: boolean = false): Promise<any> {
         return this.request('post', 'users', {
             user,
             send_information: sendToUser
@@ -318,7 +318,7 @@ export class Redmine {
      * @param userId Id of the user or 'current' for retrieving the user whose credentials are used to access the API.
      * @param params 
      */
-    public getUser(userId: number | 'current', params?: GetUserParams): Promise<any> {
+    public getUser(userId: number | 'current', params?: RedmineTS.Users.GetParams): Promise<any> {
         return this.request('get', `users/${userId}`, { params })
     }
 
@@ -329,7 +329,7 @@ export class Redmine {
      * @param userId 
      * @param user 
      */
-    public updateUser(userId: number | 'current', user: UpdateUserParams): Promise<any> {
+    public updateUser(userId: number | 'current', user: RedmineTS.Users.UpdateParams): Promise<any> {
         return this.request('put', `users/${userId}`, { user })
     }
 
@@ -352,7 +352,7 @@ export class Redmine {
      * 
      * @param params 
      */
-    public listTimeEntries(params?: ListTimeEntryParams): Promise<any> {
+    public listTimeEntries(params?: RedmineTS.TimeEntries.ListParams): Promise<any> {
         return this.request('get', 'time_entries', { params })
     }
 
@@ -373,7 +373,7 @@ export class Redmine {
      * 
      * @param timeEntry
      */
-    public createTimeEntry(timeEntry: CreateTimeEntryParams): Promise<any> {
+    public createTimeEntry(timeEntry: RedmineTS.TimeEntries.CreateParams): Promise<any> {
         return this.request('post', 'time_entries', {
             time_entry: timeEntry
         })
@@ -389,7 +389,7 @@ export class Redmine {
      * @param teId 
      * @param timeEntry 
      */
-    public updateTimeEntry(teId: number, timeEntry: UpdateTimeEntryParams): Promise<any> {
+    public updateTimeEntry(teId: number, timeEntry: RedmineTS.TimeEntries.UpdateParams): Promise<any> {
         return this.request('put', `time_entries/${teId}`, {
             time_entry: timeEntry
         })
@@ -414,7 +414,7 @@ export class Redmine {
      * 
      * @param params 
      */
-    public listAllNews(params?: ListNewsParams): Promise<any> {
+    public listAllNews(params?: RedmineTS.News.ListParams): Promise<any> {
         return this.request('get', 'news', { params });
     }
 
@@ -425,7 +425,7 @@ export class Redmine {
      * @param projectId 
      * @param params 
      */
-    public listProjectNews(projectId: ProjectID, params?: ListNewsParams): Promise<any> {
+    public listProjectNews(projectId: RedmineTS.Projects.ID, params?: RedmineTS.News.ListParams): Promise<any> {
         return this.request('get', `projects/${projectId}/news`, { params });
     }
 
@@ -435,7 +435,7 @@ export class Redmine {
      * 
      * @param newsId 
      */
-    public getNews(newsId: number, params?: GetNewsParams): Promise<any> {
+    public getNews(newsId: number, params?: RedmineTS.News.GetParams): Promise<any> {
         return this.request('get', `news/${newsId}`, { params })
     }
 
@@ -445,7 +445,7 @@ export class Redmine {
      * 
      * @param news 
      */
-    public createNews(projectId: ProjectID, news: CreateNewsParams): Promise<any> {
+    public createNews(projectId: RedmineTS.Projects.ID, news: RedmineTS.News.CreateParams): Promise<any> {
         return this.request('post', `projects/${projectId}/news`, { news })
     }
 
@@ -456,7 +456,7 @@ export class Redmine {
      * @param newsId 
      * @param news 
      */
-    public updateNews(newsId: number, news: UpdateNewsParams): Promise<any> {
+    public updateNews(newsId: number, news: RedmineTS.News.UpdateParams): Promise<any> {
         return this.request('put', `news/${newsId}`, { news })
     }
 
@@ -490,7 +490,7 @@ export class Redmine {
      * @param issueId 
      * @param relation 
      */
-    public createIssueRelation(issueId: number, relation: CreateIssueRelations): Promise<any> {
+    public createIssueRelation(issueId: number, relation: RedmineTS.IssueRelations.CreateParams): Promise<any> {
         return this.request('post', `issues/${issueId}/relations`, { relation })
     }
 
@@ -524,7 +524,7 @@ export class Redmine {
      * 
      * @param projectId 
      */
-    public listProjectVersions(projectId: ProjectID): Promise<any> {
+    public listProjectVersions(projectId: RedmineTS.Projects.ID): Promise<any> {
         return this.request('get', `projects/${projectId}/versions`)
     }
 
@@ -535,7 +535,7 @@ export class Redmine {
      * @param projectId
      * @param version
      */
-    public createProjectVersion(projectId: ProjectID, version: CreateVersionParams): Promise<any> {
+    public createProjectVersion(projectId: RedmineTS.Projects.ID, version: RedmineTS.Versions.CreateParams): Promise<any> {
         return this.request('post', `projects/${projectId}/versions`, { version })
     }
 
@@ -556,7 +556,7 @@ export class Redmine {
      * @param versionId 
      * @param version 
      */
-    public updateProjectVersion(versionId: number, version: UpdateVersionParams): Promise<any> {
+    public updateProjectVersion(versionId: number, version: RedmineTS.Versions.UpdateParams): Promise<any> {
         return this.request('put', `versions/${versionId}`, { version })
     }
 
@@ -579,7 +579,7 @@ export class Redmine {
      * 
      * @param projectId 
      */
-    public listWikiPages(projectId: ProjectID): Promise<any> {
+    public listWikiPages(projectId: RedmineTS.Projects.ID): Promise<any> {
         return this.request('get', `projects/${projectId}/wiki/index`)
     }
 
@@ -593,7 +593,7 @@ export class Redmine {
      * @param params 
      * @param version 
      */
-    public getWikiPage(projectId: ProjectID, pageTitle: string, params?: GetWikiPageParams, version?: number): Promise<any> {
+    public getWikiPage(projectId: RedmineTS.Projects.ID, pageTitle: string, params?: RedmineTS.WikiPages.GetParams, version?: number): Promise<any> {
         return this.request('get', `projects/${projectId}/wiki/${pageTitle}${version ? "/" + version : ''}`, { params })
     }
 
@@ -614,7 +614,7 @@ export class Redmine {
      * @param pageTitle 
      * @param wikiPages 
      */
-    public createUpdateWikiPage(projectId: ProjectID, pageTitle: string, wikiPages: CreateUpdateWikiPagesParams): Promise<any> {
+    public createUpdateWikiPage(projectId: RedmineTS.Projects.ID, pageTitle: string, wikiPages: RedmineTS.WikiPages.CreateUpdateParams): Promise<any> {
         return this.request('put', `projects/${projectId}/wiki/${pageTitle}`, {
             wiki_page: wikiPages
         })
@@ -628,7 +628,7 @@ export class Redmine {
      * @param projectId 
      * @param pageTitle 
      */
-    public deleteWikiPage(projectId: ProjectID, pageTitle: string): Promise<any> {
+    public deleteWikiPage(projectId: RedmineTS.Projects.ID, pageTitle: string): Promise<any> {
         return this.request('delete', `projects/${projectId}/wiki/${pageTitle}`)
     }
 
@@ -680,7 +680,7 @@ export class Redmine {
      * @param attachmentId 
      * @param attachment 
      */
-    public updateAttachmentInfo(attachmentId: number, attachment: UpdateAttachment): Promise<any> {
+    public updateAttachmentInfo(attachmentId: number, attachment: RedmineTS.Attachments.UpdateParams): Promise<any> {
         return this.request('put', `attachments/${attachmentId}`, { attachment })
     }
 
@@ -755,7 +755,7 @@ export class Redmine {
      * Returns the issue categories available for the project of given id or identifier.
      * @param projectId 
      */
-    public listIssueCategories(projectId: ProjectID): Promise<any> {
+    public listIssueCategories(projectId: RedmineTS.Projects.ID): Promise<any> {
         return this.request('get', `projects/${projectId}/issue_categories`)
     }
     
@@ -766,7 +766,7 @@ export class Redmine {
      * @param projectId 
      * @param issueCategory 
      */
-    public createIssueCategory(projectId: ProjectID, issueCategory: CreateIssueCategory): Promise<any> {
+    public createIssueCategory(projectId: RedmineTS.Projects.ID, issueCategory: RedmineTS.IssueCategories.CreateParams): Promise<any> {
         return this.request('post', `projects/${projectId}/issue_categories`, {
             issue_category: issueCategory
         })
@@ -789,7 +789,7 @@ export class Redmine {
      * @param issueCategoryId 
      * @param issueCategory 
      */
-    public updateIssueCategory(issueCategoryId: number, issueCategory: UpdateIssueCategory): Promise<any> {
+    public updateIssueCategory(issueCategoryId: number, issueCategory: RedmineTS.IssueCategories.UpdateParams): Promise<any> {
         return this.request('put', `issue_categories/${issueCategoryId}`, {
             issue_category: issueCategory
         })
@@ -843,7 +843,7 @@ export class Redmine {
      * 
      * @param group 
      */
-    public createGroup(group: CreateGroupParams): Promise<any> {
+    public createGroup(group: RedmineTS.Groups.CreateParams): Promise<any> {
         return this.request('post', 'groups', { group })
     }
 
@@ -854,7 +854,7 @@ export class Redmine {
      * @param groupId 
      * @param params 
      */
-    public getGroup(groupId: number, params?: GetGroupParams): Promise<any> {
+    public getGroup(groupId: number, params?: RedmineTS.Groups.GetParams): Promise<any> {
         return this.request('get', `groups/${groupId}`, { params })
     }
 
@@ -865,7 +865,7 @@ export class Redmine {
      * @param groupId 
      * @param group 
      */
-    public updateGroup(groupId: number, group: UpdateGroupParams): Promise<any> {
+    public updateGroup(groupId: number, group: RedmineTS.Groups.UpdateParams): Promise<any> {
         return this.request('put', `groups/${groupId}`, { group })
     }
 
@@ -924,7 +924,7 @@ export class Redmine {
      * @param q 
      * @param additionalParams 
      */
-    public search(q: string, additionalParams?: SearchParams): Promise<any> {
+    public search(q: string, additionalParams?: RedmineTS.Search.Params): Promise<any> {
         return this.request('get', 'search', { 
             params: {
                 q,
@@ -942,7 +942,7 @@ export class Redmine {
      * 
      * @param projectId 
      */
-    public listProjectFiles(projectId: ProjectID): Promise<any> {
+    public listProjectFiles(projectId: RedmineTS.Projects.ID): Promise<any> {
         return this.request('get', `projects/${projectId}/files`)
     }
 
@@ -953,7 +953,7 @@ export class Redmine {
      * @param projectId 
      * @param file 
      */
-    public addProjectFile(projectId: ProjectID, file: AddProjectFileParams): Promise<any> {
+    public addProjectFile(projectId: RedmineTS.Projects.ID, file: RedmineTS.Files.AddProjectarams): Promise<any> {
         return this.request('post', `projects/${projectId}/files`, { file })
     }
 
@@ -968,363 +968,454 @@ export class Redmine {
         return this.request('get', 'my/account')
     }
 
-    public updateMyAccount(user: UpdateMyAccountParams): Promise<any> {
+    public updateMyAccount(user: RedmineTS.MyAccount.UpdateParams): Promise<any> {
         return this.request('put', 'my/account', { user })
     }
 
 }
 
-// ==================== COMMON ====================
-type RedmineOptions = {
+
+export namespace RedmineTS {
+
+  export type Config = {
     apiKey: string;
     maxUploadSize?: number;     // Default: 5MB
-}
-
-type ProjectID = number | string;
-
-type EnabledModuleNames =  'boards' | 'calendar' | 'documents' | 'files' | 'gantt' | 'issue_tracking' | 'news' | 'repository' | 'time_tracking' | 'wiki';
-
-type CommonCustomField = {
-    id: number;
-    value: string;
-}
-
-type CommonUpload = {
-    token: string;
-    filename: string;
-    content_type: string;
-    description?: string;
-}
-
-type CommonPaginationParams = {
-    limit?: number;
-    offset?: number;
-}
-
-
-// ==================== PROJECTS ====================
-// https://www.redmine.org/projects/redmine/wiki/Rest_Projects
-
-type OptionalProjectParams = {
-    description?: string;
-    homepage?: string;
-    is_public?: boolean;
-    parent_id?: number;
-    inherit_members?: boolean;
-    tracker_ids?: number[];
-    enabled_module_names?: EnabledModuleNames[];
-    issue_custom_field_ids?: number[];
-}
-
-type CreateProjectParams = OptionalProjectParams & {
-    name: string;
-    identifier: string;
-};
-
-type UpdateProjectParams = OptionalProjectParams & {
-    name?: string;
-};
-
-type ListProjectsParamsInclude = 'trackers' | 'issue_categories' |'enabled_modules';
-type ListProjectsParams = CommonPaginationParams & {
-    include?: ListProjectsParamsInclude[];
-}
-
-type GetProjectParamsInclude = ListProjectsParamsInclude | 'time_entry_activities';
-type GetProjectParams = {
-    include?: GetProjectParamsInclude[];
-}
-
-// ==================== ISSUES ====================
-// https://www.redmine.org/projects/redmine/wiki/Rest_Issues
-
-type OptionalIssueParams = {
-    tracker_id?: number;
-    status_id?: number;
-    priority_id?: number;
-    description?: string;
-    category_id?: number;
-    fixed_version_id?: number;
-    assigned_to_id?: number;
-    parent_issue_id?: number;
-    custom_fields?: CommonCustomField[];
-    watcher_user_ids?: number[];
-    is_private?: boolean;
-    estimated_hours?: number;
-    uploads?: CommonUpload[];
-}
-
-type CreateIssueParams = OptionalIssueParams & {
-    subject: string;
-    project_id: number;
-}
-
-type UpdateIssueParams = OptionalIssueParams & {
-    subject?: string;
-    project_id?: number;
-    notes?: string;
-    private_notes?: boolean;
-}
-
-type ListIssuesParamsInclude = 'attachments' | 'relations';
-
-type ListIssuesParams = CommonPaginationParams & {
-    sort?: string;
-    include?: ListIssuesParamsInclude[];
-
-    issue_id?: number[] | string;
-    project_id?: number;
-    subproject_id?: number | string;
-    tracker_id?: number;
-    status_id?: number | 'open' | 'closed' | '*';
-    assigned_to_id?: number | 'me';
-    parent_id?: number;
-    query_id?: number;
-    // TODO currently cf_x is not supported :/ 
-}
-
-type GetIssueParamsInclude = ListIssuesParamsInclude | 'children' | 'changesets' | 'journals' | 'watchers';
-type GetIssueParams = {
-    include?: GetIssueParamsInclude[]
-}
-
-
-// ==================== MEMBERSHIPS ====================
-// https://www.redmine.org/projects/redmine/wiki/Rest_Memberships
-
-type MembershipParams = {
-    user_id: number;
-    role_ids: number[];
-}
-
-type UpdateMembership = {
-    role_ids: number[];
-}
-
-type ListProjectMembersParams = CommonPaginationParams;
-
-// ==================== USERS ====================
-// https://www.redmine.org/projects/redmine/wiki/Rest_Users
-
-type ListUsersParams = CommonPaginationParams & {
-    status?: 0 | 1 | 2 | 3,
-    name?: string;
-    group_id?: number;
-}
-
-type UserMailNotifications = 'all' | 'selected' | 'only_my_events' | 'only_assigned' | 'only_owner' | 'none';
-
-/* TODO
-- Verify if all attributes should/can be changed during update!
-- Can password be reseted by API? 
-    https://www.redmine.org/boards/2/topics/54718
-    https://www.redmine.org/projects/redmine/wiki/Rest_Users#PUT
-    https://www.redmine.org/projects/redmine/repository/entry/branches/4.1-stable/app/controllers/users_controller.rb#L147
- */
-type OptionalUserParams = {
-    auth_source_id?: number;
-    mail_notification?: UserMailNotifications;
-    must_change_passwd?: boolean;
-    generate_password?: boolean;
-    admin?: boolean;
-    status?: number;
-}
-type CreateUserParams = OptionalUserParams & {
-    login: string;
-    password: string;
-    firstname: string;
-    lastname: string;
-    mail: string;
-}
-
-type UpdateUserParams = OptionalUserParams & {
-    login?: string;
-    firstname?: string;
-    lastname?: string;
-    mail?: string;
-}
-
-type GetUserParamsInclude = 'memberships' | 'groups';
-type GetUserParams = {
-    include?: GetUserParamsInclude[];
-}
-
-
-// ==================== TIME ENTRIES ====================
-// https://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
-
-type ListTimeEntryParams = CommonPaginationParams & {
-    user_id?: number;
-    project_id?: number;
-    spent_on?: string;
-    from?: string;
-    to?: string;
-}
-
-type OptionalTimeEntryParams = {
-    spent_on?: string;
-    activity_id?: number;
-    comments?: string;
-    user_id?: number;
-}
-type CreateTimeEntryParams = OptionalTimeEntryParams & {
-    issue_id: number;
-    project_id?: never;
-} | {
-    issue_id?: never;
-    project_id: number;
-} & {
-    hours: number;
-}
-
-type UpdateTimeEntryParams = OptionalTimeEntryParams & {
-    project_id?: number;
-    issue_id?: number;
-    hours?: number;
-}
-
-
-// ==================== NEWS ====================
-// https://www.redmine.org/projects/redmine/wiki/Rest_News
-// or https://www.redmine.org/issues/13468
-
-type ListNewsParams = CommonPaginationParams;
-
-type GetNewsParamsInclude = 'attachments';
-type GetNewsParams = {
-    include?: GetNewsParamsInclude[];
-}
-
-type OptionalCreateNewsParams = {
-    summary?: string;
-    uploads?: CommonUpload[]
-}
-
-type CreateNewsParams = OptionalCreateNewsParams & {
-    title: string;
-    description: string;
-}
-
-type UpdateNewsParams = OptionalCreateNewsParams & {
-    title?: string;
-    description?: string;
-}
+  }
+
+
+  // ==================== COMMON NAMESPACE ====================
+
+  export namespace Common {
+
+    export type EnabledModuleNames =  'boards' | 'calendar' | 'documents' | 'files' | 'gantt' | 'issue_tracking' | 'news' | 'repository' | 'time_tracking' | 'wiki';
+
+    export type CustomField = {
+      id: number;
+      value: string;
+    }
+
+    export type Upload = {
+      token: string;
+      filename: string;
+      content_type: string;
+      description?: string;
+    }
+
+    export type PaginationParams = {
+      limit?: number;
+      offset?: number;
+    }
+
+  }
+
+
+  // ==================== PROJECT NAMESPACE ====================
+  // https://www.redmine.org/projects/redmine/wiki/Rest_Projects
+
+  export namespace Projects {
+
+    export type ID = number | string;
+
+    export type OptionalParams = {
+      description?: string;
+      homepage?: string;
+      is_public?: boolean;
+      parent_id?: number;
+      inherit_members?: boolean;
+      tracker_ids?: number[];
+      enabled_module_names?: Common.EnabledModuleNames[];
+      issue_custom_field_ids?: number[];
+    }
+
+    export type CreateParams = OptionalParams & {
+      name: string;
+      identifier: string;
+    };
+    
+    export type UpdateParams = OptionalParams & {
+      name?: string;
+    };
+
+    export type ListParamsInclude = 'trackers' | 'issue_categories' |'enabled_modules';
+
+    export type ListParams = Common.PaginationParams & {
+      include?: ListParamsInclude[];
+    }
+  
+    export type GetParamsInclude = ListParamsInclude | 'time_entry_activities';
+
+    export type GetParams = {
+      include?: GetParamsInclude[];
+    }
+  }
+
+
+  // ==================== ISSUES NAMESPACE ====================
+  // https://www.redmine.org/projects/redmine/wiki/Rest_Issues
+
+  export namespace Issues {
+
+    export type OptionalParams = {
+      tracker_id?: number;
+      status_id?: number;
+      priority_id?: number;
+      description?: string;
+      category_id?: number;
+      fixed_version_id?: number;
+      assigned_to_id?: number;
+      parent_issue_id?: number;
+      custom_fields?: Common.CustomField[];
+      watcher_user_ids?: number[];
+      is_private?: boolean;
+      estimated_hours?: number;
+      uploads?: Common.Upload[];
+    }
+
+    export type CreateParams = OptionalParams & {
+      subject: string;
+      project_id: number;
+    }
+    
+    export type UpdateParams = OptionalParams & {
+      subject?: string;
+      project_id?: number;
+      notes?: string;
+      private_notes?: boolean;
+    }
+
+    export type ListParamsInclude = 'attachments' | 'relations';
+  
+    export type ListParams = Common.PaginationParams & {
+      sort?: string;
+      include?: ListParamsInclude[];
+    
+      issue_id?: number[] | string;
+      project_id?: number;
+      subproject_id?: number | string;
+      tracker_id?: number;
+      status_id?: number | 'open' | 'closed' | '*';
+      assigned_to_id?: number | 'me';
+      parent_id?: number;
+      query_id?: number;
+      // TODO currently cf_x is not supported :/ 
+    }
+    
+    export type GetParamsInclude = ListParamsInclude | 'children' | 'changesets' | 'journals' | 'watchers';
+
+    export type GetParams = {
+      include?: GetParamsInclude[]
+    }
+  }
+
+
+  // ==================== MEMBERSHIPS NAMESPACE ====================
+  // https://www.redmine.org/projects/redmine/wiki/Rest_Memberships
+
+  export namespace Memberships {
+
+    export type AddParams = {
+      user_id: number;
+      role_ids: number[];
+    }
+
+    export type UpdateParams = {
+      role_ids: number[];
+    }
+
+    export type ListProjectMembersParams = Common.PaginationParams;
+
+  }
+
+
+  // ==================== USERS NAMESPACE====================
+  // https://www.redmine.org/projects/redmine/wiki/Rest_Users
+
+  export namespace Users {
+
+    export type MailNotificationOptions = 'all' | 'selected' | 'only_my_events' | 'only_assigned' | 'only_owner' | 'none';
+
+    /* TODO
+      - Verify if all attributes should/can be changed during update!
+      - Can password be reseted by API? 
+        https://www.redmine.org/boards/2/topics/54718
+        https://www.redmine.org/projects/redmine/wiki/Rest_Users#PUT
+        https://www.redmine.org/projects/redmine/repository/entry/branches/4.1-stable/app/controllers/users_controller.rb#L147
+      */
+    export type OptionalParams = {
+      auth_source_id?: number;
+      mail_notification?: MailNotificationOptions;
+      must_change_passwd?: boolean;
+      generate_password?: boolean;
+      admin?: boolean;
+      status?: number;
+    }
+
+    export type ListParams = Common.PaginationParams & {
+      status?: 0 | 1 | 2 | 3,
+      name?: string;
+      group_id?: number;
+    }
+
+    export type CreateParams = OptionalParams & {
+      login: string;
+      password: string;
+      firstname: string;
+      lastname: string;
+      mail: string;
+    }
+
+    export type GetParamsInclude = 'memberships' | 'groups';
+
+    export type GetParams = {
+      include?: GetParamsInclude[];
+    }
+    
+    export type UpdateParams = OptionalParams & {
+      login?: string;
+      firstname?: string;
+      lastname?: string;
+      mail?: string;
+    }
+  }
+
+
+  // ==================== TIME ENTRIES NAMESPACE ====================
+  // https://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
+
+  export namespace TimeEntries {
+
+    export type ListParams = Common.PaginationParams & {
+      user_id?: number;
+      project_id?: number;
+      spent_on?: string;
+      from?: string;
+      to?: string;
+    }
+
+    export type OptionalParams = {
+      spent_on?: string;
+      activity_id?: number;
+      comments?: string;
+      user_id?: number;
+    }
+    export type CreateParams = OptionalParams & {
+      issue_id: number;
+      project_id?: never;
+    } | {
+      issue_id?: never;
+      project_id: number;
+    } & {
+      hours: number;
+    }
+    
+    export type UpdateParams = OptionalParams & {
+      project_id?: number;
+      issue_id?: number;
+      hours?: number;
+    }
+
+  }
+
+
+  // ==================== NEWS NAMESPACE ====================
+  // https://www.redmine.org/projects/redmine/wiki/Rest_News
+  // or https://www.redmine.org/issues/13468
+
+  export namespace News {
+
+    export type ListParams = Common.PaginationParams;
+  
+    export type GetParamsInclude = 'attachments';
+
+    export type GetParams = {
+      include?: GetParamsInclude[];
+    }
+    
+    export type OptionalCreateParams = {
+      summary?: string;
+      uploads?: Common.Upload[]
+    }
+    
+    export type CreateParams = OptionalCreateParams & {
+      title: string;
+      description: string;
+    }
+    
+    export type UpdateParams = OptionalCreateParams & {
+      title?: string;
+      description?: string;
+    }
+
+  }
+
+
+  // ==================== ISSUES RELATIONS NAMESPACE ====================
+  
+  export namespace IssueRelations {
+ 
+    export type RelationType = 'relates' | 'duplicates' | 'duplicated' | 'blocks' | 'blocked' | 'precedes' | 'follows' | 'copied_to' | 'copied_from';
+
+    export type CreateParams = {
+      issue_to_id: number;
+      relation_type?: RelationType;
+      delay?: number;
+    }
+
+  }
+  
+  
+  // ==================== VERSIONS NAMESPACE ====================
+
+  export namespace Versions {
+  
+    export type OptionalVersionParams = {
+      status?: 'open' | 'locked' | 'closed';
+      sharing?: 'none' | 'descendants' | 'hierarchy' | 'tree' | 'system';
+      due_date?: string;
+      description?: string;
+      wiki_page_title?: string;
+    }
+    
+    export type CreateParams = OptionalVersionParams & {
+      name: string;
+    }
+    
+    export type UpdateParams = OptionalVersionParams & {
+      name?: string;
+    }
+
+  }
+  
+
+  // ==================== WIKI PAGES NAMESPACE ====================
+
+  export namespace WikiPages {
+  
+    export type GetParams = {
+      include?: 'attachments'
+    }
+    
+    export type CreateUpdateParams = {
+      text: string;
+      comments?: string;
+      version?: number;
+      parent_id?: number;
+      uploads?: Common.Upload[];
+    }
+
+  }
+  
+  
+  // ==================== QUERIES NAMESPACE ====================
+
+  //export namespace Queries {}
+  
+  // ==================== ATTACHMENTS NAMESPACE ====================
+  
+  export namespace Attachments {
+
+    export type UpdateParams = {
+      filename?: string;
+      description?: string;
+    }
+
+  }
+
+  
+  // ==================== ISSUE STATUSES NAMESPACE ====================
+
+  //export namespace IssueStatuses {}
+  
+  // ==================== TRACKERS NAMESPACE ====================
+
+  //export namespace Trackers {}
+  
+  // ==================== ENUMERATIONS NAMESPACE ====================
+
+  //export namespace Enumerations {}
+  
+  // ==================== ISSUE CATEGORIES NAMESPACE ====================
+
+  export namespace IssueCategories {
+
+    export type OptionalCreateParams = {
+      assigned_to_id?: number;
+    }
+    
+    export type CreateParams = OptionalCreateParams & {
+      name: string;
+    }
+    
+    export type UpdateParams = OptionalCreateParams & {
+      name?: string;
+    }
+
+  }
+
+  
+  // ==================== ROLES NAMESPACE ====================
+
+  //export namespace Roles {}
+  
+  // ==================== GROUPS NAMESPACE ====================
+  
+  export namespace Groups {
+
+    export type CreateParams = {
+      name: string;
+      user_ids?: number[];
+    }
+    
+    export type UpdateParams = {
+      name?: string;
+    }
+    
+    export type GetParamsInclude = 'users' | 'memberships';
+
+    export type GetParams = {
+      include?: GetParamsInclude[];
+    }
+
+  }
+  
+  
+  // ==================== CUSTOM FIELDS NAMESPACE ====================
+
+  //export namespace CustomFields {}
+  
+  // ==================== SEARCH NAMESPACE ====================
+
+  export namespace Search {
+
+    export type Params = Common.PaginationParams;
+
+  }
+  
+  
+  // ==================== FILES NAMESPACE ====================
+  
+  export namespace Files {
+
+    export type AddProjectarams = {
+      token: string;
+      version_id?: number;
+      filename?: string;
+      description?: string;
+    }
+
+  }
+  
+  
+  // ==================== MY ACCOUNT NAMESPACE ====================
+  
+  export namespace MyAccount {
+
+    export type UpdateParams = {
+      firstame?: string;
+      lastname?: string;
+      mail?: string;
+    }
+
+  }
 
-
-// ==================== ISSUES RELATIONS  ====================
-
-type CreateIssueRelations = {
-    issue_to_id: number;
-    relation_type?: 'relates' | 'duplicates' | 'duplicated' | 'blocks' | 'blocked' | 'precedes' | 'follows' | 'copied_to' | 'copied_from';
-    delay?: number;
-}
-
-
-// ==================== VERSIONS ====================
-
-type OptionalCreateVersionParams = {
-    status?: 'open' | 'locked' | 'closed';
-    sharing?: 'none' | 'descendants' | 'hierarchy' | 'tree' | 'system';
-    due_date?: string;
-    description?: string;
-    wiki_page_title?: string;
-}
-
-type CreateVersionParams = OptionalCreateVersionParams & {
-    name: string;
-}
-
-type UpdateVersionParams = OptionalCreateVersionParams & {
-    name?: string;
-}
-
-
-// ==================== WIKI PAGES ====================
-
-type GetWikiPageParams = {
-    include?: 'attachments'
-}
-
-type CreateUpdateWikiPagesParams = {
-    text: string;
-    comments?: string;
-    version?: number;
-    parent_id?: number;
-    uploads?: CommonUpload[];
-}
-
-
-// ==================== QUERIES ====================
-
-// ==================== ATTACHMENTS ====================
-
-type UpdateAttachment = {
-    filename?: string;
-    description?: string;
-}
-
-
-// ==================== ISSUE STATUSES ====================
-
-// ==================== TRACKERS ====================
-
-// ==================== ENUMERATIONS ====================
-
-// ==================== ISSUE CATEGORIES ====================
-
-type OptionalCreateIssueCategory = {
-    assigned_to_id?: number;
-}
-
-type CreateIssueCategory = OptionalCreateIssueCategory & {
-    name: string;
-}
-
-type UpdateIssueCategory = OptionalCreateIssueCategory & {
-    name?: string;
-}
-
-
-// ==================== ROLES ====================
-
-// ==================== GROUPS ====================
-
-type CreateGroupParams = {
-    name: string;
-    user_ids?: number[];
-}
-
-type UpdateGroupParams = {
-    name?: string;
-}
-
-type GetGroupParamsInclude = 'users' | 'memberships';
-type GetGroupParams = {
-    include?: GetGroupParamsInclude[];
-}
-
-
-// ==================== CUSTOM FIELDS ====================
-
-// ==================== SEARCH ====================
-
-type SearchParams = CommonPaginationParams;
-
-
-// ==================== FILES ====================
-
-type AddProjectFileParams = {
-    token: string;
-    version_id?: number;
-    filename?: string;
-    description?: string;
-}
-
-
-// ==================== MY ACCOUNT ====================
-
-type UpdateMyAccountParams = {
-    firstame?: string;
-    lastname?: string;
-    mail?: string;
 }
