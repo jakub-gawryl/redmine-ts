@@ -1071,6 +1071,9 @@ export namespace RedmineTS {
       is_private?: boolean;
       estimated_hours?: number;
       uploads?: Common.Upload[];
+      done_ratio?: number;
+      start_date?: string;
+      due_date?: string;
     }
 
     export type CreateParams = OptionalParams & {
