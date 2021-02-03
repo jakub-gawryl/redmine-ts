@@ -83,11 +83,13 @@ export class Redmine {
                     throw Error(`Axios connection problem (${err.config.baseURL}): ${err.errno}`)
                 }
 
-                if (err.response?.data.errors) {
-                    throw Error(`${err.response?.data.errors.join(", ")}`)
-                }
-                else if (err.response?.statusText) {
-                    throw Error(`${err.response.status} ${err.response.statusText} (${err.request.path})`)
+                if (err.response) {
+                  let message = `${err.response.status} ${err.response.statusText} (${err.request.path})`;
+
+                  if (Array.isArray(err.response.data.errors) && err.response.data.errors.length > 0) {
+                    message += `\n${err.response?.data.errors.join(", ")}`
+                  }
+                  throw Error(message);
                 }
                 else {
                     throw err;
