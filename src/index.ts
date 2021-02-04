@@ -24,10 +24,6 @@ export class Redmine {
             throw Error('Redmine host is not specified!')
         }
 
-        if (!options.apiKey) {
-            throw Error('Redmine API key not specified!')
-        }
-
         this.baseURL = baseUrl;
         this.options = options;
     }
@@ -62,10 +58,22 @@ export class Redmine {
                 baseURL: this.baseURL,
                 maxBodyLength: this.options.maxUploadSize || 5242880, // Default: 5MB
                 headers: {
-                    'X-Redmine-API-Key': this.options.apiKey,
                     'Content-Type': 'application/json'
                 }
             };
+
+            const { apiKey, username, password } = this.options;
+
+            if (apiKey) {
+              connConfig.headers['X-Redmine-API-Key'] = apiKey;
+            }
+            else if (username && password) {
+              connConfig.auth = {
+                username,
+                password
+              };
+            }
+
             this.conn = axios.create(connConfig);
         }
 
@@ -980,7 +988,9 @@ export class Redmine {
 export namespace RedmineTS {
 
   export type Config = {
-    apiKey: string;
+    apiKey?: string;
+    username?: string;
+    password?: string;
     maxUploadSize?: number;     // Default: 5MB
   }
 
