@@ -62,8 +62,9 @@ export class Redmine {
                 }
             };
 
-            const { apiKey, username, password } = this.options;
+            const { apiKey, username, password, impersonateUser } = this.options;
 
+            // Set authentication
             if (apiKey) {
               connConfig.headers['X-Redmine-API-Key'] = apiKey;
             }
@@ -72,6 +73,11 @@ export class Redmine {
                 username,
                 password
               };
+            }
+
+            // Set impersonate
+            if (impersonateUser) {
+              connConfig.headers['X-Redmine-Switch-User'] = impersonateUser;
             }
 
             this.conn = axios.create(connConfig);
@@ -991,6 +997,7 @@ export namespace RedmineTS {
     apiKey?: string;
     username?: string;
     password?: string;
+    impersonateUser?: string;
     maxUploadSize?: number;     // Default: 5MB
   }
 
